@@ -1,0 +1,12 @@
+class aligner_irq_stress_test extends aligner_base_test;
+  `uvm_component_utils(aligner_irq_stress_test)
+  function new(string name, uvm_component parent); super.new(name, parent); endfunction
+  task run_phase(uvm_phase phase);
+    irq_stress_vseq vseq;
+    phase.raise_objection(this);
+    #(20 * 10ns + 1ns);
+    vseq = irq_stress_vseq::type_id::create("vseq");
+    vseq.start(env.vseqr);
+    phase.drop_objection(this);
+  endtask
+endclass : aligner_irq_stress_test
