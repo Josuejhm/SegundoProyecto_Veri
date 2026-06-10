@@ -8,13 +8,13 @@
 
 class apb_illegal_ctrl_vseq extends uvm_sequence;
   `uvm_object_utils(apb_illegal_ctrl_vseq)
+  `uvm_declare_p_sequencer(aligner_vsequencer)
 
   function new(string name = "apb_illegal_ctrl_vseq");
     super.new(name);
   endfunction
 
   task body();
-    aligner_vsequencer  vseqr;
     apb_config_ctrl_seq cfg_seq;
     apb_write_seq       wr_seq;
     md_rx_rand_seq      rx_seq;
@@ -23,8 +23,6 @@ class apb_illegal_ctrl_vseq extends uvm_sequence;
     bit [2:0]  s;
     bit [1:0]  o;
 
-    if (!$cast(vseqr, m_sequencer))
-      `uvm_fatal("APB_ILLEGAL_CTRL_VSEQ", "cast a aligner_vsequencer falló")
 
     // Arrancar RX y TX en background
     fork
@@ -32,12 +30,12 @@ class apb_illegal_ctrl_vseq extends uvm_sequence;
         rx_seq = md_rx_rand_seq::type_id::create("rx_seq");
         rx_seq.n_transfers    = 80;
         rx_seq.illegal_weight = 0;
-        rx_seq.start(vseqr.md_rx_seqr);
+        rx_seq.start(p_sequencer.md_rx_seqr);
       end
       begin
         tx_seq = md_tx_rand_seq::type_id::create("tx_seq");
         tx_seq.n_responses = 200;
-        tx_seq.start(vseqr.md_tx_seqr);
+        tx_seq.start(p_sequencer.md_tx_seqr);
       end
     join_none
 
@@ -49,7 +47,7 @@ class apb_illegal_ctrl_vseq extends uvm_sequence;
       wr_seq = apb_write_seq::type_id::create("wr_seq_size0");
       wr_seq.addr = aligner_pkg::ADDR_CTRL;
       wr_seq.data = wdata;
-      wr_seq.start(vseqr.apb_seqr);
+      wr_seq.start(p_sequencer.apb_seqr);
       if (!wr_seq.slverr)
         `uvm_error("APB_ILLEGAL_CTRL_VSEQ",
           "pslverr=0 para CTRL write con SIZE=0 — se esperaba error")
@@ -75,7 +73,7 @@ class apb_illegal_ctrl_vseq extends uvm_sequence;
       wr_seq = apb_write_seq::type_id::create("wr_seq_illegal_combo");
       wr_seq.addr = aligner_pkg::ADDR_CTRL;
       wr_seq.data = wdata;
-      wr_seq.start(vseqr.apb_seqr);
+      wr_seq.start(p_sequencer.apb_seqr);
       if (!wr_seq.slverr)
         `uvm_error("APB_ILLEGAL_CTRL_VSEQ",
           $sformatf("pslverr=0 para CTRL write ilegal SIZE=%0d OFFSET=%0d", s, o))
@@ -84,7 +82,7 @@ class apb_illegal_ctrl_vseq extends uvm_sequence;
     // Caso 3: write legal — verificar pslverr=0 y que CTRL se actualiza
     cfg_seq = apb_config_ctrl_seq::type_id::create("cfg_seq_legal");
     cfg_seq.randomize_fields = 1'b1;
-    cfg_seq.start(vseqr.apb_seqr);
+    cfg_seq.start(p_sequencer.apb_seqr);
 
     disable fork;
   endtask

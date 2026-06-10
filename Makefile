@@ -1,5 +1,7 @@
 ###############################################################################
-# Makefile — cfs_aligner ambiente UVM 
+# Makefile — cfs_aligner UVM environment
+# Simulador : VCS M-2017.03-SP2-5
+# UVM       : 1.2 (via -ntb_opts uvm-1.2)
 #
 # Targets:
 #   make compile              — compilar DUT + TB
@@ -82,7 +84,7 @@ ALL_TESTS := \
 all: compile
 
 ## ── Compilación ──────────────────────────────────────────────────────────────
-compile:
+compile: $(RESULTS_DIR)
 	@echo "══════════════════════════════════════════"
 	@echo " Compilando WIDTH=$(WIDTH) DEPTH=$(DEPTH)"
 	@echo "══════════════════════════════════════════"
@@ -90,7 +92,7 @@ compile:
 	vcs $(VCS_FLAGS) \
 	    $(CM_FLAGS) \
 	    -o $(SIMV) \
-	    -f rtl.f \
+	    -f aligner.f \
 	    -f tb.f \
 	    -l $(RESULTS_DIR)/log_compile
 	@echo "✔ Compilación exitosa → $(SIMV)"
