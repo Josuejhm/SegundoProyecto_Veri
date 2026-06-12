@@ -18,13 +18,13 @@
 +incdir+tb/env
 +incdir+tb/tests
 
+// Package — incluye internamente todos los archivos del TB en orden
+tb/aligner_pkg.sv
+
 // Interfaces — deben compilar antes que el pkg
 tb/interfaces/apb_if.sv
 tb/interfaces/md_rx_if.sv
 tb/interfaces/md_tx_if.sv
-
-// Package — incluye internamente todos los archivos del TB en orden
-tb/aligner_pkg.sv
 
 // Top-level — instancia DUT, interfaces y llama run_test()
 tb/tb_top.sv
