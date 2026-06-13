@@ -20,7 +20,7 @@
 
 
 interface md_tx_if (
-  input logic clk
+  input logic clk,
   input logic reset_n
 );
 
