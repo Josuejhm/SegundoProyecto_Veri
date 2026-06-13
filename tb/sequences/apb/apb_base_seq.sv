@@ -38,7 +38,7 @@ class apb_base_seq extends uvm_sequence #(apb_seq_item);
   //   idle    : ciclos IDLE antes de la transacción (default 0)
   // -------------------------------------------------------------------------
   task write(
-    input  bit [15:0] addr,
+    input  bit [15:0] wr_addr,
     input  bit [31:0] data,
     output bit        slverr,
     input  int unsigned idle = 0
@@ -49,7 +49,7 @@ class apb_base_seq extends uvm_sequence #(apb_seq_item);
     item.addr_mapped_c.constraint_mode(0); // deshabilitar mapped para poder escribir a cualquier dirección
     item.addr_unmapped_c.constraint_mode(0); // deshabilitar unmapped para poder escribir a cualquier dirección
     if (!item.randomize() with {
-      item.addr        == addr;
+      item.addr        == wr_addr;
       item.write       == 1'b1;
       item.wdata       == data;
       item.idle_cycles == idle;
@@ -67,7 +67,7 @@ class apb_base_seq extends uvm_sequence #(apb_seq_item);
   //   idle   : ciclos IDLE antes de la transacción (default 0)
   // -------------------------------------------------------------------------
   task read(
-    input  bit [15:0] addr,
+    input  bit [15:0] rd_addr,
     output bit [31:0] data,
     output bit        slverr,
     input  int unsigned idle = 0
@@ -78,7 +78,7 @@ class apb_base_seq extends uvm_sequence #(apb_seq_item);
     item.addr_mapped_c.constraint_mode(0); // deshabilitar mapped para poder leer de cualquier dirección
     item.addr_unmapped_c.constraint_mode(0); // deshabilitar unmapped para poder leer de cualquier dirección
     if (!item.randomize() with {
-      item.addr        == addr;
+      item.addr        == rd_addr;
       item.write       == 1'b0;
       item.idle_cycles == idle;
     })
