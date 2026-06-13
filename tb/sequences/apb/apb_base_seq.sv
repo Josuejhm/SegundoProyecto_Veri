@@ -47,6 +47,7 @@ class apb_base_seq extends uvm_sequence #(apb_seq_item);
     item = apb_seq_item::type_id::create("apb_write_item");
     start_item(item);
     item.addr_mapped_c.constraint_mode(0); // deshabilitar mapped para poder escribir a cualquier dirección
+    item.addr_unmapped_c.constraint_mode(0); // deshabilitar unmapped para poder escribir a cualquier dirección
     if (!item.randomize() with {
       item.addr        == addr;
       item.write       == 1'b1;
@@ -75,6 +76,7 @@ class apb_base_seq extends uvm_sequence #(apb_seq_item);
     item = apb_seq_item::type_id::create("apb_read_item");
     start_item(item);
     item.addr_mapped_c.constraint_mode(0); // deshabilitar mapped para poder leer de cualquier dirección
+    item.addr_unmapped_c.constraint_mode(0); // deshabilitar unmapped para poder leer de cualquier dirección
     if (!item.randomize() with {
       item.addr        == addr;
       item.write       == 1'b0;
