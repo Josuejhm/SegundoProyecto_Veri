@@ -1,7 +1,7 @@
++timescale+1ns/1ps
+
 // ─────────────────────────────────────────────
 // tb.f — Filelist del testbench UVM
-// Orden estricto de dependencias:
-//   interfaces → pkg (que incluye todo lo demás) → tb_top
 // ─────────────────────────────────────────────
 
 // +incdir necesarios para que el pkg encuentre los `include
@@ -18,10 +18,10 @@
 +incdir+tb/env
 +incdir+tb/tests
 
-// Package — incluye internamente todos los archivos del TB en orden
+// Package — debe ir primero para que las interfaces puedan importarlo
 tb/aligner_pkg.sv
 
-// Interfaces — deben compilar antes que el pkg
+// Interfaces — importan aligner_pkg::* para los anchos de señal
 tb/interfaces/apb_if.sv
 tb/interfaces/md_rx_if.sv
 tb/interfaces/md_tx_if.sv

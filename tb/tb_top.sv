@@ -15,7 +15,6 @@
 // Import UVM and the testbench package (includes all TB classes)
 import uvm_pkg::*;
 `include "uvm_macros.svh"
-import aligner_pkg::*;
 
 module tb_top;
 
