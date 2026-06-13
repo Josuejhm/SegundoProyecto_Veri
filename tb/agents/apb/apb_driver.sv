@@ -98,7 +98,7 @@ class apb_driver extends uvm_driver #(apb_seq_item);
         $sformatf("ACCESS ciclo 0: pready=%0b pslverr=%0b psel=%0b penable=%0b addr=0x%04h pwdata=0x%08h",
                   vif.driver_cb.pready, vif.driver_cb.pslverr,
                   vif.psel, vif.penable,
-                  vif.driver_cb.paddr, vif.driver_cb.pwdata), UVM_NONE)
+                  vif.paddr, vif.pwdata), UVM_NONE)
       while (!vif.driver_cb.pready) begin
         wait_count++;
         `uvm_info("APB_DRV_DBG",
