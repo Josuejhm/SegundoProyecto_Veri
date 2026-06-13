@@ -18,12 +18,12 @@
 //                - err is only valid at the end of the transfer (ready = 1)
 ///////////////////////////////////////////////////////////////////////////////
 
-import aligner_pkg::*;
-
 interface md_rx_if (
   input logic clk,
   input logic reset_n
 );
+
+  import aligner_pkg::*;
 
   // -------------------------------------------------------------------------
   // Signal declarations
