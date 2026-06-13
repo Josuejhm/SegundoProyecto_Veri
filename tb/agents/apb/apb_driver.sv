@@ -108,7 +108,6 @@ class apb_driver extends uvm_driver #(apb_seq_item);
     item.slverr = vif.driver_cb.pslverr;
 
     // 5. Regresa a IDLE
-    @(vif.driver_cb);
     drive_idle();
   endtask
 
