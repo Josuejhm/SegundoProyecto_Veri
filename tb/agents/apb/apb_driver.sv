@@ -42,6 +42,7 @@ class apb_driver extends uvm_driver #(apb_seq_item);
     // Inicializar señales en IDLE antes de que salga el reset
     drive_idle();
     @(posedge vif.clk iff vif.reset_n === 1'b1);
+    @(vif.driver_cb);       // Esperar un ciclo extra para que el DUT se estabilice 
 
     forever begin
       apb_seq_item item;
