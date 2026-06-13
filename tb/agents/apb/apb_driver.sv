@@ -73,6 +73,10 @@ class apb_driver extends uvm_driver #(apb_seq_item);
     drive_idle();
     repeat (item.idle_cycles) @(vif.driver_cb);
 
+    `uvm_info("APB_DRV_DBG",
+      $sformatf(("NUEVA TXN: addr=0x%04h write=%0b wdata=0x%08h",
+                item.addr, item.write, item.wdata), UVM_NONE)
+
     // 2. SETUP — 1 ciclo con psel=1, penable=0
     vif.driver_cb.paddr   <= item.addr;
     vif.driver_cb.pwrite  <= item.write;
