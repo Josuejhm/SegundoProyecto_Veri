@@ -147,6 +147,12 @@ package aligner_pkg;
   `include "sequences/md_tx/md_tx_rand_seq.sv"
 
   // -------------------------------------------------------------------------
+  // Virtual sequencer
+  // -------------------------------------------------------------------------
+
+  `include "env/aligner_vsequencer.sv"
+
+  // -------------------------------------------------------------------------
   // Virtual sequences
   // -------------------------------------------------------------------------
   `include "sequences/virtual/base_vseq.sv"
@@ -164,7 +170,6 @@ package aligner_pkg;
   // -------------------------------------------------------------------------
   // Environment components (scoreboard, coverage, env, vsequencer)
   // -------------------------------------------------------------------------
-  `include "env/aligner_vsequencer.sv"
   `include "env/aligner_scoreboard.sv"
   `include "env/aligner_coverage.sv"
   `include "env/aligner_env.sv"
