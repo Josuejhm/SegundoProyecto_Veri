@@ -56,7 +56,6 @@ class apb_seq_item extends uvm_sequence_item;
       aligner_pkg::ADDR_IRQEN,
       aligner_pkg::ADDR_IRQ
     });
-    addr_unmapped_c.constraint_mode(0); // inactivo por defecto
   }
 
   // idle_cycles: sesgado hacia valores bajos para no ralentizar la simulación
@@ -69,6 +68,7 @@ class apb_seq_item extends uvm_sequence_item;
   // -------------------------------------------------------------------------
   function new(string name = "apb_seq_item");
     super.new(name);
+    addr_unmapped_c.constraint_mode(0); // inactivo por defecto
   endfunction
 
   // -------------------------------------------------------------------------

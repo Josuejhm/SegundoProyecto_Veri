@@ -58,8 +58,8 @@ module tb_top;
   // Interface instantiation (all share the same clk — CDC disabled in DUT)
   // -------------------------------------------------------------------------
   apb_if   apb_if_inst  (.clk(clk), .reset_n(reset_n));
-  md_rx_if md_rx_if_inst(.clk(clk));
-  md_tx_if md_tx_if_inst(.clk(clk));
+  md_rx_if md_rx_if_inst(.clk(clk), .reset_n(reset_n));
+  md_tx_if md_tx_if_inst(.clk(clk), .reset_n(reset_n));
 
   // -------------------------------------------------------------------------
   // DUT instantiation

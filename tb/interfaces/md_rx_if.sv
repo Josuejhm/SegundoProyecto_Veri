@@ -21,7 +21,8 @@
 import aligner_pkg::*;
 
 interface md_rx_if (
-  input logic clk
+  input logic clk,
+  input logic reset_n
 );
 
   // -------------------------------------------------------------------------
