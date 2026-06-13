@@ -47,6 +47,7 @@ VCS_FLAGS := \
     -debug_acc+all \
     -debug_region+cell+encrypt \
     +lint=TFIPC-L \
+	-timescale=1ns/1ps \
     +define+ALGN_DATA_WIDTH=$(WIDTH) \
     +define+FIFO_DEPTH=$(DEPTH)
 

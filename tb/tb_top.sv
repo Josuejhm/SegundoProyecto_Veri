@@ -10,7 +10,6 @@
 //   FIFO_DEPTH      : 2 | 8 (default) | 16
 ///////////////////////////////////////////////////////////////////////////////
 
-`timescale 1ns/1ps
 
 // Import UVM and the testbench package (includes all TB classes)
 import uvm_pkg::*;

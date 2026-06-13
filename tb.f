@@ -1,5 +1,3 @@
-+timescale+1ns/1ps
-
 // ─────────────────────────────────────────────
 // tb.f — Filelist del testbench UVM
 // ─────────────────────────────────────────────
@@ -18,7 +16,7 @@
 +incdir+tb/env
 +incdir+tb/tests
 
-// Package — debe ir primero para que las interfaces puedan importarlo
+// Package
 tb/aligner_pkg.sv
 
 // Interfaces — importan aligner_pkg::* para los anchos de señal
