@@ -34,34 +34,38 @@ class base_vseq extends uvm_sequence;
     cfg_seq.randomize_fields = 1'b1;
     cfg_seq.start(p_sequencer.apb_seqr);
 
-    // 2. Lanzar los tres agentes en paralelo
+    // 2. Lazar TX en background; APB y RX corren hasta completar
+    tx_seq = md_tx_rand_seq::type_id::create("tx_seq");
+    tx_seq.n_responses = n_tx_responses;
+
     fork
-      begin : apb_thread
-        apb_seq = apb_rand_seq::type_id::create("apb_seq");
-        apb_seq.n_txns = n_apb_txns;
-        apb_seq.start(p_sequencer.apb_seqr);
-      end
-      begin : rx_thread
-        rx_seq = md_rx_rand_seq::type_id::create("rx_seq");
-        rx_seq.n_transfers    = n_rx_transfers;
-        rx_seq.illegal_weight = 20;
-        rx_seq.start(p_sequencer.md_rx_seqr);
-      end
-      begin : tx_thread
-        tx_seq = md_tx_rand_seq::type_id::create("tx_seq");
-        tx_seq.n_responses = n_tx_responses;
-        tx_seq.start(p_sequencer.md_tx_seqr);
+      // TX corre en background respondiendo handshakes
+      tx_seq.start(p_sequencer.md_tx_seqr);
+ 
+      // APB y RX corren hasta completar su conteo
+      begin
+        fork
+          begin : apb_thread
+            apb_seq = apb_rand_seq::type_id::create("apb_seq");
+            apb_seq.n_txns = n_apb_txns;
+            apb_seq.start(p_sequencer.apb_seqr);
+          end
+          begin : rx_thread
+            rx_seq = md_rx_rand_seq::type_id::create("rx_seq");
+            rx_seq.n_transfers    = n_rx_transfers;
+            rx_seq.illegal_weight = 20;
+            rx_seq.start(p_sequencer.md_rx_seqr);
+          end
+        join  // espera APB y RX
+ 
+        // 3. Drain: esperar TX FIFO vacía para que el scoreboard reciba todo
+        drain_seq = apb_read_status_seq::type_id::create("drain_seq");
+        drain_seq.poll_en       = 1'b1;
+        drain_seq.poll_tx_empty = 1'b1;
+        drain_seq.poll_timeout  = 500;
+        drain_seq.start(p_sequencer.apb_seqr);
       end
     join_any
-
-    // Drain: esperar a que TX FIFO se vacíe antes de cancelar el TX thread
-    // Garantiza que el scoreboard reciba todos los transfers predichos
-    drain_seq = apb_read_status_seq::type_id::create("drain_seq");
-    drain_seq.poll_en       = 1'b1;
-    drain_seq.poll_tx_empty = 1'b1;
-    drain_seq.poll_timeout  = 500;
-    drain_seq.start(p_sequencer.apb_seqr);
-    
     disable fork;
 
     // 3. Leer STATUS al final
