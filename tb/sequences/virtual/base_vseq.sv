@@ -25,7 +25,9 @@ class base_vseq extends uvm_sequence;
     apb_rand_seq          apb_seq;
     md_rx_rand_seq        rx_seq;
     md_tx_rand_seq        tx_seq;
+    apb_read_status_seq   drain_seq;
     apb_read_status_seq   status_seq;
+    
 
     // 1. Configurar CTRL con combinación legal aleatoria
     cfg_seq = apb_config_ctrl_seq::type_id::create("cfg_seq");
@@ -51,6 +53,15 @@ class base_vseq extends uvm_sequence;
         tx_seq.start(p_sequencer.md_tx_seqr);
       end
     join_any
+
+    // Drain: esperar a que TX FIFO se vacíe antes de cancelar el TX thread
+    // Garantiza que el scoreboard reciba todos los transfers predichos
+    drain_seq = apb_read_status_seq::type_id::create("drain_seq");
+    drain_seq.poll_en       = 1'b1;
+    drain_seq.poll_tx_empty = 1'b1;
+    drain_seq.poll_timeout  = 500;
+    drain_seq.start(p_sequencer.apb_seqr);
+    
     disable fork;
 
     // 3. Leer STATUS al final
