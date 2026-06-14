@@ -19,7 +19,7 @@
 class apb_driver extends uvm_driver #(apb_seq_item);
   `uvm_component_utils(apb_driver)
 
-  // Virtual interface handle
+  // Puntero a la interfaz vitual
   virtual apb_if vif;
 
   function new(string name, uvm_component parent);
@@ -36,7 +36,7 @@ class apb_driver extends uvm_driver #(apb_seq_item);
   endfunction
 
   // -------------------------------------------------------------------------
-  // run_phase — loop principal
+  // run_phase 
   // -------------------------------------------------------------------------
   task run_phase(uvm_phase phase);
     // Inicializar señales en IDLE antes de que salga el reset
@@ -73,9 +73,9 @@ class apb_driver extends uvm_driver #(apb_seq_item);
     drive_idle();
     repeat (item.idle_cycles) @(vif.driver_cb);
 
-    `uvm_info("APB_DRV_DBG",
-      $sformatf("NUEVA TXN: addr=0x%04h write=%0b wdata=0x%08h",
-                item.addr, item.write, item.wdata), UVM_NONE)
+    //`uvm_info("APB_DRV_DBG",
+    //  $sformatf("NUEVA TXN: addr=0x%04h write=%0b wdata=0x%08h",
+    //            item.addr, item.write, item.wdata), UVM_NONE)
 
     // 2. SETUP — 1 ciclo con psel=1, penable=0
     vif.driver_cb.paddr   <= item.addr;
@@ -98,25 +98,25 @@ class apb_driver extends uvm_driver #(apb_seq_item);
     begin : wait_pready
       int unsigned wait_count = 0;
       @(vif.driver_cb);
-      `uvm_info("APB_DRV_DBG",
-        $sformatf("ACCESS ciclo 0: pready=%0b pslverr=%0b psel=%0b penable=%0b addr=0x%04h pwdata=0x%08h",
-                  vif.driver_cb.pready, vif.driver_cb.pslverr,
-                  vif.psel, vif.penable,
-                  vif.paddr, vif.pwdata), UVM_NONE)
+      //`uvm_info("APB_DRV_DBG",
+      //  $sformatf("ACCESS ciclo 0: pready=%0b pslverr=%0b psel=%0b penable=%0b addr=0x%04h pwdata=0x%08h",
+      //            vif.driver_cb.pready, vif.driver_cb.pslverr,
+      //            vif.psel, vif.penable,
+      //            vif.paddr, vif.pwdata), UVM_NONE)
       while (!vif.driver_cb.pready) begin
         wait_count++;
-        `uvm_info("APB_DRV_DBG",
-          $sformatf("ACCESS ciclo %0d: pready=%0b pslverr=%0b",
-                    wait_count, vif.driver_cb.pready, vif.driver_cb.pslverr), UVM_NONE)
+        //`uvm_info("APB_DRV_DBG",
+        //  $sformatf("ACCESS ciclo %0d: pready=%0b pslverr=%0b",
+        //            wait_count, vif.driver_cb.pready, vif.driver_cb.pslverr), UVM_NONE)
         if (wait_count > max_wait)
           `uvm_error("APB_DRV",
             $sformatf("pready timeout tras %0d ciclos: addr=0x%04h write=%0b",
                       wait_count, item.addr, item.write))
         @(vif.driver_cb);
       end
-      `uvm_info("APB_DRV_DBG",
-        $sformatf("ACCESS done: pready=%0b pslverr=%0b",
-                  vif.driver_cb.pready, vif.driver_cb.pslverr), UVM_NONE)
+      //`uvm_info("APB_DRV_DBG",
+      //  $sformatf("ACCESS done: pready=%0b pslverr=%0b",
+      //            vif.driver_cb.pready, vif.driver_cb.pslverr), UVM_NONE)
     end
 
     // 4. Capturar respuesta
