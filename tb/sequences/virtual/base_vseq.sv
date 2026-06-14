@@ -27,8 +27,6 @@ class base_vseq extends uvm_sequence;
     md_tx_rand_seq        tx_seq;
     apb_read_status_seq   status_seq;
 
-    // Obtener el virtual sequencer
-
     // 1. Configurar CTRL con combinación legal aleatoria
     cfg_seq = apb_config_ctrl_seq::type_id::create("cfg_seq");
     cfg_seq.randomize_fields = 1'b1;
@@ -52,7 +50,8 @@ class base_vseq extends uvm_sequence;
         tx_seq.n_responses = n_tx_responses;
         tx_seq.start(p_sequencer.md_tx_seqr);
       end
-    join
+    join_any
+    disable fork;
 
     // 3. Leer STATUS al final
     status_seq = apb_read_status_seq::type_id::create("status_seq");
