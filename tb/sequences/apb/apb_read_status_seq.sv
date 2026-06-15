@@ -1,23 +1,11 @@
 ///////////////////////////////////////////////////////////////////////////////
-// File:        apb_read_status_seq.sv
-// Description: APB sequence que lee el registro STATUS y expone los campos
+// Archivo:     apb_read_status_seq.sv
+// Descripción: Secuencia APB que lee el registro STATUS y expone los campos
 //              CNT_DROP, RX_LVL y TX_LVL al llamador.
 //
 //              Opcionalmente hace polling hasta que una condición se cumpla
 //              (útil para esperar que la FIFO llegue a cierto nivel antes
 //              de continuar con la virtual sequence).
-//
-//              Uso típico — lectura simple:
-//                apb_read_status_seq seq;
-//                seq = apb_read_status_seq::type_id::create("seq");
-//                seq.start(env.vseqr.apb_seqr);
-//                $display("RX_LVL=%0d", seq.rx_lvl);
-//
-//              Uso típico — polling:
-//                seq.poll_en       = 1;
-//                seq.poll_rx_full  = 1;   // esperar RX FIFO lleno
-//                seq.poll_timeout  = 500; // máximo 500 lecturas
-//                seq.start(env.vseqr.apb_seqr);
 ///////////////////////////////////////////////////////////////////////////////
 
 class apb_read_status_seq extends apb_base_seq;

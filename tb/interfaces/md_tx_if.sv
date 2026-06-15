@@ -1,22 +1,22 @@
-///////////////////////////////////////////////////////////////////////////////
-// File:        md_tx_if.sv
-// Description: MD TX interface for the cfs_aligner UVM environment.
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Archivo:        md_tx_if.sv
+// Descripción: Interfaz MD TX para el ambiente UVM del cfs_aligner.
 //
-//              The DUT is the MASTER on this interface:
-//                - DUT sends:       md_tx_valid, md_tx_data,
+//              El DUT es el MAESTRO en esta interfaz:
+//                - DUT envía:       md_tx_valid, md_tx_data,
 //                                   md_tx_offset, md_tx_size
-//                - Driver (TB) responds with: md_tx_ready, md_tx_err
+//                - Driver (TB) responde con: md_tx_ready, md_tx_err
 //
-//              Signal widths depend on ALGN_DATA_WIDTH (set via aligner_pkg
-//              parameters). The interface uses the package parameters directly.
+//              Los anchos de señal dependen del parámetro ALGN_DATA_WIDTH (establecido via aligner_pkg
+//              parameters). La interfaz usa los parámetros del paquete directamente.
 //
-//              MD protocol reminder (from RTL header):
-//                - Transfer starts when valid = 1
-//                - Transfer ends  when valid = 1 AND ready = 1
-//                - Once valid is asserted, data/offset/size must stay stable
-//                  until the handshake completes
-//                - err is only valid at the end of the transfer (ready = 1)
-///////////////////////////////////////////////////////////////////////////////
+//              Recordatorio del protocolo MD:
+//                - Transferencia empieza cuando valid = 1
+//                - Transferencia termina cuando valid = 1 AND ready = 1
+//                - Una vez que valid es assertado, data/offset/size debe permanecer estable
+//                  hasta que el handshake se complete
+//                - err solo es válido al final de la transferencia (ready = 1)
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 interface md_tx_if (
@@ -27,15 +27,15 @@ interface md_tx_if (
   import aligner_pkg::*;
 
   // -------------------------------------------------------------------------
-  // Signal declarations
+  // Declaración de señales MD TX
   // -------------------------------------------------------------------------
-  // DUT → TB (driven by the DUT)
+  // DUT → TB (Manejado por el DUT)
   logic                              md_tx_valid;
   logic [ALGN_DATA_WIDTH-1:0]        md_tx_data;
   logic [ALGN_OFFSET_WIDTH-1:0]      md_tx_offset;
   logic [ALGN_SIZE_WIDTH-1:0]        md_tx_size;
 
-  // TB → DUT (driven by the MD TX driver)
+  // TB → DUT (Manejado por el driver MD TX)
   logic                              md_tx_ready;
   logic                              md_tx_err;
 
@@ -69,7 +69,7 @@ interface md_tx_if (
   endclocking
 
   // -------------------------------------------------------------------------
-  // Modport definitions
+  // Definición de modports
   // -------------------------------------------------------------------------
   modport driver_mp  (clocking driver_cb,  input clk);
   modport monitor_mp (clocking monitor_cb, input clk);

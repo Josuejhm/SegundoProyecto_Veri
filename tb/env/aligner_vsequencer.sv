@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
-// File:        aligner_vsequencer.sv
-// Description: Virtual sequencer for the cfs_aligner UVM environment.
+// Archivo:     aligner_vsequencer.sv
+// Descripción: Virtual sequencer para el ambiente de UVM del cfs_aligner.
 //              No contiene lógica propia — expone handles a los tres
 //              sequencers concretos para que las virtual sequences los usen
 //              directamente.

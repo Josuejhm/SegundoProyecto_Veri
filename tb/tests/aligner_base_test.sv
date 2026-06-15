@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
-// File:        aligner_base_test.sv
-// Description: Base test for the cfs_aligner UVM environment.
+// Archivo:     aligner_base_test.sv
+// Descripción: Test base para el ambiente de UVM del cfs_aligner.
 //              Todos los tests concretos heredan de este.
 //
 //              Responsabilidades:
@@ -17,7 +17,7 @@
 class aligner_base_test extends uvm_test;
   `uvm_component_utils(aligner_base_test)
 
-  // Environment handle
+  // Puntero del ambiente
   aligner_env env;
 
   function new(string name, uvm_component parent);

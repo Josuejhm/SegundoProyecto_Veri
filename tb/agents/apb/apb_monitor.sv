@@ -1,6 +1,6 @@
-///////////////////////////////////////////////////////////////////////////////
-// File:        apb_monitor.sv
-// Description: APB monitor for the cfs_aligner UVM environment.
+/////////////////////////////////////////////////////////////////////////////////////
+// Archivo:        apb_monitor.sv
+// Descripción: Monitor APB para el entorno UVM cfs_aligner.
 //              Observa pasivamente la interfaz APB y publica apb_seq_item
 //              por el analysis port apb_mon_ap al completarse cada transacción.
 //
@@ -14,12 +14,12 @@
 //              El monitor también observa tb_top.irq por referencia jerárquica
 //              y lo registra en el item como campo de contexto (no funcional
 //              para el protocolo APB, pero útil para el scoreboard de IRQs).
-///////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
 
 class apb_monitor extends uvm_monitor;
   `uvm_component_utils(apb_monitor)
 
-  // Virtual interface handle
+  // Puntero de la interfaz virtual
   virtual apb_if vif;
 
   // Analysis port — publica apb_seq_item al scoreboard y coverage

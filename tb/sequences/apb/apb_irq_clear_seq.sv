@@ -1,6 +1,6 @@
-///////////////////////////////////////////////////////////////////////////////
-// File:        apb_irq_clear_seq.sv
-// Description: APB sequence para manejar el registro IRQ (W1C).
+////////////////////////////////////////////////////////////////////////////////
+// Archivo:     apb_irq_clear_seq.sv
+// Descripción: Secuencia APB para manejar el registro IRQ (W1C).
 //              Primero lee IRQ para capturar los bits activos, luego
 //              escribe de vuelta los bits activos para limpiarlos (W1C).
 //
@@ -10,15 +10,6 @@
 //
 //              Expone irq_before y irq_after para que el scoreboard o la
 //              virtual sequence puedan verificar el comportamiento W1C.
-//
-//              Uso típico — limpiar todos los IRQs activos:
-//                apb_irq_clear_seq seq;
-//                seq = apb_irq_clear_seq::type_id::create("seq");
-//                seq.start(env.vseqr.apb_seqr);
-//
-//              Uso típico — limpiar solo RX_FIFO_EMPTY:
-//                seq.clear_mask = 32'h0000_0001;
-//                seq.start(env.vseqr.apb_seqr);
 ///////////////////////////////////////////////////////////////////////////////
 
 class apb_irq_clear_seq extends apb_base_seq;

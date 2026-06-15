@@ -1,8 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
-// File:        apb_sequencer.sv
-// Description: Sequencer for the APB agent.
-//              No custom logic required — uvm_sequencer parameterized with
-//              apb_seq_item is sufficient for this protocol.
+// Archivo:     apb_sequencer.sv
+// Descripción: Sequencer para el agente APB.
 ///////////////////////////////////////////////////////////////////////////////
 
 class apb_sequencer extends uvm_sequencer #(apb_seq_item);

@@ -1,17 +1,17 @@
-///////////////////////////////////////////////////////////////////////////////
-// File:        apb_if.sv
-// Description: APB interface for the cfs_aligner UVM environment.
-//              Widths match the cfs_aligner wrapper localparam values:
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Archivo:     apb_if.sv
+// Descripción: Interfaz APB para el entorno UVM del cfs_aligner.
+//              Los anchos coinciden con los valores de los parámetros locales del wrapper cfs_aligner:
 //                APB_ADDR_WIDTH = 16
 //                APB_DATA_WIDTH = 32
 //
-//              Contains:
-//                - driver_cb   : clocking block used by the APB driver
-//                - monitor_cb  : clocking block used by the APB monitor
-//              The irq signal is NOT part of this interface; it is exposed as
-//              a loose signal in tb_top (tb_top.irq) and observed directly
-//              by the APB monitor through hierarchical reference.
-///////////////////////////////////////////////////////////////////////////////
+//              Contiene:
+//                - driver_cb   : clocking block usado por el APB driver
+//                - monitor_cb  : clocking block usado por el APB monitor
+//              La señal irq no forma parte de esta interfaz; está expuesta como
+//              una señal suelta en tb_top (tb_top.irq) y observada directamente
+//              por el APB monitor a través de una referencia jerárquica.
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 interface apb_if (
   input logic clk,
@@ -19,16 +19,16 @@ interface apb_if (
 );
 
   // -------------------------------------------------------------------------
-  // Signal declarations
+  // Declaración de señales APB
   // -------------------------------------------------------------------------
-  // Master → Slave (driven by the APB driver)
+  // Maestro → Esclavo (manejado por el APB driver)
   logic [15:0] paddr;
   logic        pwrite;
   logic        psel;
   logic        penable;
   logic [31:0] pwdata;
 
-  // Slave → Master (driven by the DUT)
+  // Esclavo → Maestro (manejado por el DUT)
   logic        pready;
   logic [31:0] prdata;
   logic        pslverr;
@@ -37,7 +37,7 @@ interface apb_if (
   // Driver clocking block
   // -------------------------------------------------------------------------
   clocking driver_cb @(posedge clk);
-    default output #1;   // drive 1ns after posedge (setup margin)
+    default output #1;   // margen de tiempo de setup
 
     output paddr;
     output pwrite;
@@ -54,7 +54,7 @@ interface apb_if (
   // Monitor clocking block
   // -------------------------------------------------------------------------
   clocking monitor_cb @(posedge clk);
-    default input #1;    // sample 1ns after posedge (hold margin)
+    default input #1;    // margen de tiempo de hold
 
     input paddr;
     input pwrite;
@@ -67,7 +67,7 @@ interface apb_if (
   endclocking
 
   // -------------------------------------------------------------------------
-  // Modport definitions
+  // Definición de modports
   // -------------------------------------------------------------------------
   modport driver_mp  (clocking driver_cb,  input clk, input reset_n);
   modport monitor_mp (clocking monitor_cb, input clk, input reset_n);

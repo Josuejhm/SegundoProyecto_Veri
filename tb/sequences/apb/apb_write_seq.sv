@@ -1,16 +1,9 @@
-///////////////////////////////////////////////////////////////////////////////
-// File:        apb_write_seq.sv
-// Description: APB write sequence — ejecuta un único write APB a una
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// Archivo:     apb_write_seq.sv
+// Descripción: Secuencia APB para escribir un único registro — ejecuta un único write APB a una
 //              dirección y dato configurables.
 //              Hereda los helpers de apb_base_seq.
-//
-//              Uso típico desde una virtual sequence:
-//                apb_write_seq seq;
-//                seq = apb_write_seq::type_id::create("seq");
-//                seq.addr  = aligner_pkg::ADDR_IRQEN;
-//                seq.data  = 32'h0000_001F;
-//                seq.start(env.vseqr.apb_seqr);
-///////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
 class apb_write_seq extends apb_base_seq;
   `uvm_object_utils(apb_write_seq)

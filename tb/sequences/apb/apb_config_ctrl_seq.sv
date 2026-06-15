@@ -1,6 +1,6 @@
-///////////////////////////////////////////////////////////////////////////////
-// File:        apb_config_ctrl_seq.sv
-// Description: APB sequence que escribe el registro CTRL con una combinación
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// Archivo:     apb_config_ctrl_seq.sv
+// Descripción: Secuencia APB que escribe el registro CTRL con una combinación
 //              legal de SIZE y OFFSET, y opcionalmente activa CLR.
 //
 //              Por defecto genera SIZE y OFFSET legales aleatoriamente.
@@ -8,14 +8,6 @@
 //
 //              Legalidad: ((ALGN_DATA_WIDTH/8) + offset) % size == 0
 //                         AND size != 0
-//
-//              Uso típico:
-//                apb_config_ctrl_seq seq;
-//                seq = apb_config_ctrl_seq::type_id::create("seq");
-//                seq.size   = 3'b010;  // opcional — forzar valor
-//                seq.offset = 2'b00;   // opcional — forzar valor
-//                seq.clr    = 1'b0;
-//                seq.start(env.vseqr.apb_seqr);
 ///////////////////////////////////////////////////////////////////////////////
 
 class apb_config_ctrl_seq extends apb_base_seq;

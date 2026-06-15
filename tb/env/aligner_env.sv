@@ -1,6 +1,6 @@
-///////////////////////////////////////////////////////////////////////////////
-// File:        aligner_env.sv
-// Description: Top-level UVM environment for the cfs_aligner verification.
+/////////////////////////////////////////////////////////////////////////////////////////
+// Archivo:     aligner_env.sv
+// Descripción: Ambiente de UVM de nivel superior para la verificación del cfs_aligner.
 //
 //              build_phase  : crea los tres agentes (ACTIVE), el virtual
 //                             sequencer, el scoreboard y el coverage collector.
@@ -14,7 +14,7 @@
 //                md_tx_agent.md_tx_mon_ap   → coverage_collector.md_tx_export
 //
 //              Asigna handles de sequencers al virtual sequencer.
-///////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
 
 class aligner_env extends uvm_env;
   `uvm_component_utils(aligner_env)

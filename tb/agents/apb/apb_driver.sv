@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////
-// File:        apb_driver.sv
-// Description: APB driver for the cfs_aligner UVM environment.
-//              Implements APB3 master protocol.
+// Archivo:        apb_driver.sv
+// Descripción: Driver APB para el entorno UVM cfs_aligner.
+//              Implementa el protocolo APB3 como master.
 //
 //              Flujo por transacción:
 //                1. IDLE   — psel=0, penable=0 durante idle_cycles ciclos.
@@ -13,7 +13,7 @@
 //                5. Regresa a IDLE.
 //
 //              Nota: el driver detecta write ilegal a CTRL para ajustar el
-//              timeout, pero NO genera pslverr — eso lo decide el DUT.
+//              timeout, pero no genera pslverr — eso lo decide el DUT.
 ///////////////////////////////////////////////////////////////////////////////
 
 class apb_driver extends uvm_driver #(apb_seq_item);

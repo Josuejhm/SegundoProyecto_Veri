@@ -1,21 +1,13 @@
-///////////////////////////////////////////////////////////////////////////////
-// File:        apb_base_seq.sv
-// Description: Base sequence for all APB sequences.
-//              Provides helper tasks for single write and read transactions.
-//              All concrete APB sequences inherit from this class.
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// Archivo:     apb_base_seq.sv
+// Descripción: Secuencia base para todas las secuencias APB.
+//              Proporciona tareas auxiliares para transacciones de escritura y lectura simples.
+//              Todas las secuencias APB concretas heredan de esta clase.
 //
 //              Helpers:
 //                write(addr, data)  — ejecuta un write APB y retorna slverr
 //                read(addr, data)   — ejecuta un read APB y retorna prdata
-//
-//              Uso:
-//                class my_seq extends apb_base_seq;
-//                  task body();
-//                    write(ADDR_CTRL, 32'h0000_0001);
-//                    read(ADDR_STATUS, rdata);
-//                  endtask
-//                endclass
-///////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////
 
 class apb_base_seq extends uvm_sequence #(apb_seq_item);
   `uvm_object_utils(apb_base_seq)

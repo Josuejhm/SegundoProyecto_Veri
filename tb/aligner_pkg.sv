@@ -1,38 +1,38 @@
-///////////////////////////////////////////////////////////////////////////////
-// File:        aligner_pkg.sv
-// Description: Global testbench package for the cfs_aligner UVM environment.
-//              Imports uvm_pkg and includes all TB files in dependency order.
-//              Parameters must match the elaboration defines set in tb_top.sv.
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Archivo:     aligner_pkg.sv
+// Descripción: Paquete global del testbench para el entorno UVM del cfs_aligner.
+//              Importa uvm_pkg e incluye todos los archivos TB en orden de dependencia.
+//              Los parámetros deben coincidir con los defines de elaboración establecidos en tb_top.sv.
 //
-// Usage:       import aligner_pkg::*;  (done once in tb_top.sv)
+// Uso:         import aligner_pkg::*;
 //
-// Note:        If ALGN_DATA_WIDTH or FIFO_DEPTH are changed at elaboration,
-//              update the parameter values below to match. A single source of
-//              truth avoids width mismatches between the DUT and the TB.
-///////////////////////////////////////////////////////////////////////////////
+// Note:        Si ALGN_DATA_WIDTH o FIFO_DEPTH se cambian en tb_top.sv, 
+//              hay que actualizar los parámetros ALGN_DATA_WIDTH y FIFO_DEPTH
+//              
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 package aligner_pkg;
 
   import uvm_pkg::*;
   `include "uvm_macros.svh"
 
-  // -------------------------------------------------------------------------
-  // Elaboration parameters — must match tb_top.sv defines
-  // -------------------------------------------------------------------------
+  // -------------------------------------------------------------------------------------------------
+  // Parámetros globales del testbench (deben coincidir con los defines de elaboración en tb_top.sv)  
+  // -------------------------------------------------------------------------------------------------
   parameter int unsigned ALGN_DATA_WIDTH   = 32;
   parameter int unsigned FIFO_DEPTH        = 8;
 
-  // Derived — same formula as cfs_aligner localparam
+  // Misma lógica que en el DUT para calcular anchos derivados
   parameter int unsigned ALGN_OFFSET_WIDTH = (ALGN_DATA_WIDTH <= 8) ? 1
                                            : $clog2(ALGN_DATA_WIDTH / 8);
   parameter int unsigned ALGN_SIZE_WIDTH   = $clog2(ALGN_DATA_WIDTH / 8) + 1;
 
-  // Fixed APB widths
+  // Anchos APB
   parameter int unsigned APB_ADDR_WIDTH    = 16;
   parameter int unsigned APB_DATA_WIDTH    = 32;
 
   // -------------------------------------------------------------------------
-  // Register addresses
+  // Direccciones de los registros
   // -------------------------------------------------------------------------
   parameter bit [15:0] ADDR_CTRL   = 16'h0000;
   parameter bit [15:0] ADDR_STATUS = 16'h000C;
@@ -40,20 +40,20 @@ package aligner_pkg;
   parameter bit [15:0] ADDR_IRQ    = 16'h00F4;
 
   // -------------------------------------------------------------------------
-  // Reset values
+  // Valores de reset
   // -------------------------------------------------------------------------
   // CTRL: SIZE=1 ([2:0]=3'b001), OFFSET=0, CLR=0
   parameter bit [31:0] CTRL_RESET_VAL  = 32'h0000_0001;
 
-  // IRQEN: all five interrupt enable bits set to 1 (bits [4:0])
+  // IRQEN: todos los bits de interrupción habilitados por defecto
   parameter bit [31:0] IRQEN_RESET_VAL = 32'h0000_001F;
 
-  // STATUS and IRQ reset to 0
+  // STATUS y IRQ reset a 0
   parameter bit [31:0] STATUS_RESET_VAL = 32'h0000_0000;
   parameter bit [31:0] IRQ_RESET_VAL    = 32'h0000_0000;
 
   // -------------------------------------------------------------------------
-  // CTRL field masks and positions (for scoreboard / sequences)
+  // Posiciones de los campos CTRL
   // -------------------------------------------------------------------------
   parameter int unsigned CTRL_SIZE_LSB   = 0;
   parameter int unsigned CTRL_SIZE_MSB   = 2;
@@ -62,7 +62,7 @@ package aligner_pkg;
   parameter int unsigned CTRL_CLR_BIT    = 16;
 
   // -------------------------------------------------------------------------
-  // STATUS field positions
+  // Posiciones de los campos STATUS
   // -------------------------------------------------------------------------
   parameter int unsigned STATUS_CNT_DROP_LSB = 0;
   parameter int unsigned STATUS_CNT_DROP_MSB = 7;
@@ -72,7 +72,7 @@ package aligner_pkg;
   parameter int unsigned STATUS_TX_LVL_MSB   = 19;
 
   // -------------------------------------------------------------------------
-  // IRQ / IRQEN bit positions
+  // Posiciones de los bits IRQ / IRQEN
   // -------------------------------------------------------------------------
   parameter int unsigned IRQ_RX_FIFO_EMPTY_BIT = 0;
   parameter int unsigned IRQ_RX_FIFO_FULL_BIT  = 1;
@@ -81,11 +81,11 @@ package aligner_pkg;
   parameter int unsigned IRQ_MAX_DROP_BIT      = 4;
 
   // -------------------------------------------------------------------------
-  // APB timing constraints (from spec / RTL)
+  // Constraints de timing APB
   // -------------------------------------------------------------------------
-  // Maximum pready wait cycles in Access phase (normal transactions)
+  // Ciclos mínimos de espera de pready en la fase de acceso (transacciones normales)
   parameter int unsigned APB_MAX_WAIT_CYCLES         = 5;
-  // Maximum pready wait cycles for illegal CTRL write (RTL adds 1 extra)
+  // Ciclos máximos de espera de pready para escritura CTRL ilegal (RTL agrega 1 extra)
   parameter int unsigned APB_MAX_WAIT_CYCLES_ILLEGAL = 2;
 
   // -------------------------------------------------------------------------
@@ -96,7 +96,7 @@ package aligner_pkg;
   `include "seq_items/md_tx_seq_item.sv"
 
   // -------------------------------------------------------------------------
-  // APB agent
+  // Agente APB
   // -------------------------------------------------------------------------
   `include "agents/apb/apb_sequencer.sv"
   `include "agents/apb/apb_driver.sv"
@@ -104,7 +104,7 @@ package aligner_pkg;
   `include "agents/apb/apb_agent.sv"
 
   // -------------------------------------------------------------------------
-  // MD RX agent
+  // Agente MD RX
   // -------------------------------------------------------------------------
   `include "agents/md_rx/md_rx_sequencer.sv"
   `include "agents/md_rx/md_rx_driver.sv"
@@ -112,7 +112,7 @@ package aligner_pkg;
   `include "agents/md_rx/md_rx_agent.sv"
 
   // -------------------------------------------------------------------------
-  // MD TX agent
+  // Agente MD TX
   // -------------------------------------------------------------------------
   `include "agents/md_tx/md_tx_sequencer.sv"
   `include "agents/md_tx/md_tx_driver.sv"
@@ -120,7 +120,7 @@ package aligner_pkg;
   `include "agents/md_tx/md_tx_agent.sv"
 
   // -------------------------------------------------------------------------
-  // APB sequences
+  // Secuencias APB
   // -------------------------------------------------------------------------
   `include "sequences/apb/apb_base_seq.sv"
   `include "sequences/apb/apb_write_seq.sv"
@@ -131,7 +131,7 @@ package aligner_pkg;
   `include "sequences/apb/apb_rand_seq.sv"
 
   // -------------------------------------------------------------------------
-  // MD RX sequences
+  // Secuencias MD RX
   // -------------------------------------------------------------------------
   `include "sequences/md_rx/md_rx_base_seq.sv"
   `include "sequences/md_rx/md_rx_legal_seq.sv"
@@ -139,7 +139,7 @@ package aligner_pkg;
   `include "sequences/md_rx/md_rx_rand_seq.sv"
 
   // -------------------------------------------------------------------------
-  // MD TX sequences
+  // Secuencias MD TX 
   // -------------------------------------------------------------------------
   `include "sequences/md_tx/md_tx_base_seq.sv"
   `include "sequences/md_tx/md_tx_ready_seq.sv"
@@ -147,13 +147,13 @@ package aligner_pkg;
   `include "sequences/md_tx/md_tx_rand_seq.sv"
 
   // -------------------------------------------------------------------------
-  // Virtual sequencer
+  // Secuenciador virtual
   // -------------------------------------------------------------------------
 
   `include "env/aligner_vsequencer.sv"
 
   // -------------------------------------------------------------------------
-  // Virtual sequences
+  // Secuencias virtuales
   // -------------------------------------------------------------------------
   `include "sequences/virtual/base_vseq.sv"
   `include "sequences/virtual/fifo_rx_full_vseq.sv"
@@ -168,7 +168,7 @@ package aligner_pkg;
   `include "sequences/virtual/backpressure_vseq.sv"
 
   // -------------------------------------------------------------------------
-  // Environment components (scoreboard, coverage, env, vsequencer)
+  // Componentes del ambiente
   // -------------------------------------------------------------------------
   `include "env/aligner_scoreboard.sv"
   `include "env/aligner_coverage.sv"

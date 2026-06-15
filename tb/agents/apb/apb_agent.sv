@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
-// File:        apb_agent.sv
-// Description: APB agent for the cfs_aligner UVM environment.
+// Archivo:        apb_agent.sv
+// Descripción: Agente APB para el ambiente UVM cfs_aligner.
 //              Siempre activo (UVM_ACTIVE) — instancia sequencer, driver
 //              y monitor. Expone apb_mon_ap al env para conexión con
 //              scoreboard y coverage collector.
@@ -33,7 +33,7 @@ class apb_agent extends uvm_agent;
   endfunction
 
   // -------------------------------------------------------------------------
-  // connect_phase — conectar driver al sequencer y re-exponer el ap del monitor
+  // connect_phase — conectar driver al sequencer y re-exponer el apb del monitor
   // -------------------------------------------------------------------------
   function void connect_phase(uvm_phase phase);
     driver.seq_item_port.connect(sequencer.seq_item_export);

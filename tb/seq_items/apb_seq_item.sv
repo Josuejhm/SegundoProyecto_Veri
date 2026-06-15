@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
-// File:        apb_seq_item.sv
-// Description: Sequence item for the APB agent.
+// Archivo:        apb_seq_item.sv
+// Descripción: Item de secuencia para el agente APB.
 //
 //              Campos rand: addr, write, wdata, idle_cycles
 //              Campos no-rand (capturados por el monitor): rdata, slverr

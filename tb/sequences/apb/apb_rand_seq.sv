@@ -1,17 +1,11 @@
 ///////////////////////////////////////////////////////////////////////////////
-// File:        apb_rand_seq.sv
-// Description: APB random sequence — genera N transacciones APB totalmente
+// Archivo:     apb_rand_seq.sv
+// Descripción: Secuencia APB aleatoria — genera N transacciones APB totalmente
 //              aleatorias usando los constraints definidos en apb_seq_item.
 //
 //              Por defecto restringe accesos a direcciones mapeadas.
 //              Para ejercer direcciones no mapeadas, la vseq debe habilitar
 //              addr_unmapped_c antes de llamar start().
-//
-//              Uso típico:
-//                apb_rand_seq seq;
-//                seq = apb_rand_seq::type_id::create("seq");
-//                seq.n_txns = 50;
-//                seq.start(env.vseqr.apb_seqr);
 ///////////////////////////////////////////////////////////////////////////////
 
 class apb_rand_seq extends apb_base_seq;

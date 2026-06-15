@@ -1,17 +1,9 @@
-///////////////////////////////////////////////////////////////////////////////
-// File:        apb_read_seq.sv
-// Description: APB read sequence — ejecuta un único read APB a una
+////////////////////////////////////////////////////////////////////////////////////////////////
+// Archivo:     apb_read_seq.sv
+// Descripción: Secuencia APB para leer un único registro — ejecuta un único read APB a una
 //              dirección configurable y expone prdata y slverr al llamador.
 //              Hereda los helpers de apb_base_seq.
-//
-//              Uso típico desde una virtual sequence:
-//                apb_read_seq seq;
-//                seq = apb_read_seq::type_id::create("seq");
-//                seq.addr = aligner_pkg::ADDR_STATUS;
-//                seq.start(env.vseqr.apb_seqr);
-//                // leer resultado:
-//                status_val = seq.data;
-///////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
 
 class apb_read_seq extends apb_base_seq;
   `uvm_object_utils(apb_read_seq)
