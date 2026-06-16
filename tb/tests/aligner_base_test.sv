@@ -61,6 +61,16 @@ class aligner_base_test extends uvm_test;
     vseq = base_vseq::type_id::create("vseq");
     vseq.start(env.vseqr);
 
+    // Esperar a que el monitor TX entregue todas las transacciones
+    // al scoreboard antes de bajar la objection y entrar a check_phase.
+    // Solo cuando drain_tx=1 (corners de FIFO llena no drenan).
+    begin
+      int unsigned tmp;
+      bit drain_tx = 1'b1;
+      if ($value$plusargs("drain_tx=%0d", tmp)) drain_tx = tmp[0];
+      if (drain_tx) env.scoreboard.wait_tx_empty();
+    end
+
     phase.drop_objection(this);
   endtask
 

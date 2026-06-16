@@ -331,11 +331,26 @@ class aligner_scoreboard extends uvm_scoreboard;
   // check_phase — verificación final
   // =========================================================================
   function void check_phase(uvm_phase phase);
-    if (expected_tx.size() > 0) begin
-      `uvm_error("SCOREBOARD",
-        $sformatf("%0d transfers TX predichos pero no recibidos al final",
-                  expected_tx.size()))
-      errors += expected_tx.size();
+    // Leer drain_tx para distinguir entre error real y corner intencional
+    begin
+      int unsigned tmp;
+      bit drain_tx = 1'b1;
+      if ($value$plusargs("drain_tx=%0d", tmp)) drain_tx = tmp[0];
+
+      if (expected_tx.size() > 0) begin
+        if (drain_tx) begin
+          // drain_tx=1: transfers pendientes son un error real del DUT
+          `uvm_error("SCOREBOARD",
+            $sformatf("%0d transfers TX predichos pero no recibidos al final",
+                      expected_tx.size()))
+          errors += expected_tx.size();
+        end else begin
+          // drain_tx=0: corner intencional donde la FIFO queda llena al terminar
+          `uvm_info("SCOREBOARD",
+            $sformatf("%0d transfers TX pendientes en FIFO al terminar (drain_tx=0 — esperado)",
+                      expected_tx.size()), UVM_MEDIUM)
+        end
+      end
     end
 
     `uvm_info("SCOREBOARD",
@@ -349,5 +364,22 @@ class aligner_scoreboard extends uvm_scoreboard;
         tx_received, tx_predicted, rx_legal, rx_illegal, errors),
       UVM_NONE)
   endfunction
+
+  // =========================================================================
+  // wait_tx_empty — bloquea hasta que expected_tx esté vacía o timeout
+  // Llamada desde el test antes de drop_objection para garantizar que el
+  // monitor TX procesó todas las transacciones antes del check_phase.
+  // =========================================================================
+  task wait_tx_empty(int unsigned timeout_cycles = 10000);
+    int unsigned count = 0;
+    while (expected_tx.size() > 0 && count < timeout_cycles) begin
+      #10ns;
+      count++;
+    end
+    if (expected_tx.size() > 0)
+      `uvm_warning("SCOREBOARD",
+        $sformatf("wait_tx_empty: timeout tras %0d ciclos, quedan %0d pendientes",
+                  timeout_cycles, expected_tx.size()))
+  endtask
 
 endclass : aligner_scoreboard

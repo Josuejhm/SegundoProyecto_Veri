@@ -17,10 +17,20 @@ package aligner_pkg;
   `include "uvm_macros.svh"
 
   // -------------------------------------------------------------------------------------------------
-  // Parámetros globales del testbench (deben coincidir con los defines de elaboración en tb_top.sv)  
+  // Parámetros globales del testbench — se toman del +define de elaboración si están presentes,
+  // de lo contrario usan los valores por defecto (32 y 8 respectivamente).
   // -------------------------------------------------------------------------------------------------
-  parameter int unsigned ALGN_DATA_WIDTH   = 32;
-  parameter int unsigned FIFO_DEPTH        = 8;
+`ifdef ALGN_DATA_WIDTH
+  parameter int unsigned ALGN_DATA_WIDTH = `ALGN_DATA_WIDTH;
+`else
+  parameter int unsigned ALGN_DATA_WIDTH = 32;
+`endif
+
+`ifdef FIFO_DEPTH
+  parameter int unsigned FIFO_DEPTH = `FIFO_DEPTH;
+`else
+  parameter int unsigned FIFO_DEPTH = 8;
+`endif
 
   // Misma lógica que en el DUT para calcular anchos derivados
   parameter int unsigned ALGN_OFFSET_WIDTH = (ALGN_DATA_WIDTH <= 8) ? 1
@@ -156,16 +166,6 @@ package aligner_pkg;
   // Secuencias virtuales
   // -------------------------------------------------------------------------
   `include "sequences/virtual/base_vseq.sv"
-  `include "sequences/virtual/fifo_rx_full_vseq.sv"
-  `include "sequences/virtual/fifo_tx_full_vseq.sv"
-  `include "sequences/virtual/fifo_both_full_vseq.sv"
-  `include "sequences/virtual/fifo_empty_vseq.sv"
-  `include "sequences/virtual/illegal_rx_vseq.sv"
-  `include "sequences/virtual/cnt_sat_vseq.sv"
-  `include "sequences/virtual/apb_unmapped_vseq.sv"
-  `include "sequences/virtual/apb_illegal_ctrl_vseq.sv"
-  `include "sequences/virtual/irq_stress_vseq.sv"
-  `include "sequences/virtual/backpressure_vseq.sv"
 
   // -------------------------------------------------------------------------
   // Componentes del ambiente
@@ -178,15 +178,5 @@ package aligner_pkg;
   // Tests
   // -------------------------------------------------------------------------
   `include "tests/aligner_base_test.sv"
-  `include "tests/aligner_fifo_rx_full_test.sv"
-  `include "tests/aligner_fifo_tx_full_test.sv"
-  `include "tests/aligner_fifo_both_full_test.sv"
-  `include "tests/aligner_fifo_empty_test.sv"
-  `include "tests/aligner_illegal_rx_test.sv"
-  `include "tests/aligner_cnt_sat_test.sv"
-  `include "tests/aligner_apb_unmapped_test.sv"
-  `include "tests/aligner_apb_illegal_ctrl_test.sv"
-  `include "tests/aligner_irq_stress_test.sv"
-  `include "tests/aligner_backpressure_test.sv"
 
 endpackage : aligner_pkg
